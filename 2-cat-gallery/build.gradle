@@ -1,47 +1,53 @@
-/*
- * Copyright 2017 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+apply from: '../constants.gradle'
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility project.ext.javaVersion
+        targetCompatibility project.ext.javaVersion
+    }
 
     defaultConfig {
-        applicationId "com.google.android.flexbox.apps.catgallery"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        applicationId "com.google.android.flexbox.apps.catgallery"
+        versionName project.ext.releaseVersion
+        versionCode project.ext.releaseVersionCode
     }
+
     buildTypes {
         release {
             shrinkResources true
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles = [
+                "proguard-rules.txt",
+                getDefaultProguardFile('proguard-android.txt')
+            ]
         }
+        debug {
+            jniDebuggable = true
+        }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
+        abortOnError true
     }
 }
 
 dependencies {
-    implementation 'com.google.android:flexbox:1.1.0'
-    implementation "androidx.appcompat:appcompat:${rootProject.androidxCoreVersion}"
-    implementation "androidx.recyclerview:recyclerview:${rootProject.androidxCoreVersion}"
-    implementation "com.google.android.material:material:${rootProject.materialVersion}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.kotlinVersion}"
+    implementation 'com.google.android:flexbox:'                   + project.ext.flexboxVersion        // ( 74 KB) https://mvnrepository.com/artifact/com.google.android/flexbox
+
+    implementation 'androidx.appcompat:appcompat:'                 + project.ext.jetpackVersion        // (1.0 MB) https://mvnrepository.com/artifact/androidx.appcompat/appcompat?repo=google
+    implementation 'androidx.recyclerview:recyclerview:'           + project.ext.jetpackVersion        // (344 KB) https://mvnrepository.com/artifact/androidx.recyclerview/recyclerview?repo=google
+    implementation 'com.google.android.material:material:'         + project.ext.jetpackVersion        // (566 KB) https://mvnrepository.com/artifact/com.google.android.material/material?repo=google
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:'           + project.ext.kotlinVersion         // (939 KB) https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
 }
+
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'
