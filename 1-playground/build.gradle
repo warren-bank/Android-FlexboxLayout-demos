@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation project(":flexbox")
+    implementation 'com.google.android:flexbox:1.1.0'
     implementation "androidx.legacy:legacy-support-v4:${rootProject.androidxCoreVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.androidxCoreVersion}"
     implementation "androidx.preference:preference:${rootProject.androidxCoreVersion}"

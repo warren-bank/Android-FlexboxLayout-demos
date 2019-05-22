@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-include ':1-playground', ':2-cat-gallery', ':flexbox'
+include ':1-playground', ':2-cat-gallery'
